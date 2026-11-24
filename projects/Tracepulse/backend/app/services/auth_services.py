@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from app.core.security import hash_password, verify_password
 
 from app.repositories.user_repository import UserRepository
 
@@ -17,7 +18,7 @@ class AuthService:
         user_data = {
             "full_name": username,
             "email": email,
-            "hashed_password": password 
+            "hashed_password": hash_password(password) 
          } # In a real application, make sure to hash the password before storing it
         new_user = self.user_repository.create_user(user_data)
         return new_user
@@ -29,7 +30,7 @@ class AuthService:
             raise ValueError("User with this email does not exist.")
 
         # Verify the password (this is a placeholder, implement proper password hashing and verification)
-        if user.hashed_password != password:
+        if not verify_password(password, user.hashed_password):
             raise ValueError("Incorrect password.")
 
         return user
