@@ -1,4 +1,4 @@
-from database.database import engine
+from projects.Tracepulse.backend.database.connection import engine
 from sqlalchemy import text
 
 def test_database_connection():
